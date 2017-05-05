@@ -28,7 +28,7 @@
         </c:forEach>
     </select>
     <br><br>
-    Converted word : <input type="text" name="convertedText"/>
+    Converted word : <input type="text" name="convertedText" value=""/>
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>
 </body>

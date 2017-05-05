@@ -1,6 +1,5 @@
 package com.hsenid.controller;
 
-import com.hsenid.util.Languages;
 import com.hsenid.util.TranslateUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,10 +68,6 @@ public class HomeController {
     @RequestMapping(value = "/viewTranslate", method = RequestMethod.POST)
     public ModelAndView translatePage() {
         ModelAndView model = new ModelAndView();
-        /*for (int i=0; i<10; i++) {
-			System.out.println(util.getLanguages().get(i));
-		}*/
-        Languages languages = new Languages();
         model.addObject("languages", util.getLanguages().getDirs());
         model.setViewName("translate");
         return model;
@@ -84,6 +79,7 @@ public class HomeController {
                                     @RequestParam(value = "toConvert", required = true) String input) {
         ModelAndView model = new ModelAndView();
         util.translate(from, to, input);
+        model.addObject("output", util.translate(from, to, input).getOuotput());
         model.setViewName("translate");
         return model;
     }

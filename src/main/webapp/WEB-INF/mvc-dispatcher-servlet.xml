@@ -18,4 +18,5 @@
             <value>.jsp</value>
         </property>
     </bean>
+    <bean id="customAuthenticationSuccessHandler" class="com.hsenid.util.LoginSuccessHandler"/>
 </beans>
