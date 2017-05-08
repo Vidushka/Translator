@@ -5,10 +5,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <!-- register beans for handling incoming HTTP requests -->
     <context:component-scan base-package="com.hsenid.controller"/>
 
-    <!-- view resolver for rendering the final output -->
     <bean
             class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
@@ -19,4 +17,5 @@
         </property>
     </bean>
     <bean id="customAuthenticationSuccessHandler" class="com.hsenid.util.LoginSuccessHandler"/>
+    <bean id="util" class="com.hsenid.util.TranslateUtil"/>
 </beans>

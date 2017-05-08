@@ -17,18 +17,18 @@
     Type word to convert : <input type="text" name="toConvert">
     <select name="fromLanguage">
         <c:forEach items="${languages}" var="language">
-            <option value="<c:out value="${language}" />"><c:out value="${language}"/></option>
+            <option value="<c:out value="${language.key}" />"><c:out value="${language.value}"/></option>
         </c:forEach>
     </select>
     <br><br>
     <input type="submit" value="Translate">
     <select name="toLanguage">
         <c:forEach items="${languages}" var="language">
-            <option value="<c:out value="${language}" />"><c:out value="${language}"/></option>
+            <option value="<c:out value="${language.key}" />"><c:out value="${language.value}"/></option>
         </c:forEach>
     </select>
     <br><br>
-    Converted word : <input type="text" name="convertedText" value=""/>
+    Converted word : <input type="text" name="convertedText" value="${output}"/>
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>
 </body>

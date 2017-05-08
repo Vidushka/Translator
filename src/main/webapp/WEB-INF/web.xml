@@ -4,16 +4,12 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
 
-    <!-- project display for web application -->
     <display-name>Login</display-name>
 
-    <!-- welcome file list -->
     <welcome-file-list>
         <welcome-file>welcome.jsp</welcome-file>
     </welcome-file-list>
 
-    <!-- Spring MVC DispatcherServlet: dispatches HTTP requests to registered
-        controllers -->
     <servlet>
         <servlet-name>mvc-dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -25,7 +21,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!-- location of the root application context xml file -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
@@ -35,12 +30,10 @@
         </param-value>
     </context-param>
 
-    <!-- context loader listener -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
-    <!-- Spring Security -->
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

@@ -4,13 +4,13 @@ package com.hsenid.util;
  * Created by Vidushka on 04/05/17.
  */
 public class Words {
-    private String[] ouotput;
+    private String[] text;
 
-    public String[] getOuotput() {
-        return ouotput;
+    public String[] getText() {
+        return text;
     }
 
-    public void setOuotput(String[] ouotput) {
-        this.ouotput = ouotput;
+    public void setText(String[] text) {
+        this.text = text;
     }
 }

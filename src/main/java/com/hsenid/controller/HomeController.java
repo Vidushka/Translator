@@ -1,6 +1,7 @@
 package com.hsenid.controller;
 
 import com.hsenid.util.TranslateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,9 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomeController {
 
-    TranslateUtil util = new TranslateUtil();
+    @Autowired
+    TranslateUtil util;
 
-    // http://localhost:8080/SpringSecurity/home
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String welcomePage(ModelMap modelMap) {
 
@@ -25,7 +26,6 @@ public class HomeController {
         return "welcome";
     }
 
-    // http://localhost:8080/SpringSecurity/admin
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public ModelAndView adminPage() {
 
@@ -68,7 +68,7 @@ public class HomeController {
     @RequestMapping(value = "/viewTranslate", method = RequestMethod.POST)
     public ModelAndView translatePage() {
         ModelAndView model = new ModelAndView();
-        model.addObject("languages", util.getLanguages().getDirs());
+        model.addObject("languages", util.getLanguages());
         model.setViewName("translate");
         return model;
     }
@@ -78,8 +78,8 @@ public class HomeController {
                                     @RequestParam(value = "toLanguage", required = true) String to,
                                     @RequestParam(value = "toConvert", required = true) String input) {
         ModelAndView model = new ModelAndView();
-        util.translate(from, to, input);
-        model.addObject("output", util.translate(from, to, input).getOuotput());
+        model.addObject("languages", util.getLanguages());
+        model.addObject("output", util.translate(from, to, input).getText()[0]);
         model.setViewName("translate");
         return model;
     }
