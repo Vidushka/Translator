@@ -9,11 +9,11 @@
 </head>
 <body>
 <center>
-    <h1>Welcome to Spring Security Learning</h1>
+    <h1>Translator Login</h1>
     <div
             style="text-align: center; padding: 30px; border: 1px solid; width: 250px;">
         <form method="post"
-              action="<c:url value='/login' />">
+              action="<c:url value='/login' />" class="form-horizontal">
             <table>
                 <tr>
                     <td colspan="2" style="color: red">${message}</td>

@@ -1,6 +1,8 @@
-package com.hsenid.util;
+package com.hsenid.services;
 
 import com.google.gson.Gson;
+import com.hsenid.interfaces.ITranslater;
+import com.hsenid.util.Words;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ import java.util.HashMap;
  * Created by Vidushka on 03/05/17.
  */
 @Service
-public class TranslateUtil {
+public class TranslateServiceHttp implements ITranslater {
 
     Gson gson = new Gson();
     JSONObject obj;
@@ -23,6 +25,7 @@ public class TranslateUtil {
     BufferedReader br;
     HashMap<String, Object> result;
 
+    @Override
     public HashMap getLanguages() {
         try {
             URL url = new URL("https://translate.yandex.net/api/v1.5/tr.json/getLangs?key=trnsl.1.1.20170503T091519Z.9f30c24402100dfb.91f7ddaca07e07cddb27fd1cd769dd2b43d5c765&ui=en");
@@ -48,6 +51,7 @@ public class TranslateUtil {
         return result;
     }
 
+    @Override
     public Words translate(String inputLang, String outputLang, String wordToConvert) {
         try {
             URL url = new URL("https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170503T091519Z.9f30c24402100dfb.91f7ddaca07e07cddb27fd1cd769dd2b43d5c765&text="

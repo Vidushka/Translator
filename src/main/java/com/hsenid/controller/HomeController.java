@@ -1,6 +1,7 @@
 package com.hsenid.controller;
 
-import com.hsenid.util.TranslateUtil;
+import com.hsenid.services.TranslateServiceHttp;
+import com.hsenid.services.TranslateServiceRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
 
     @Autowired
-    TranslateUtil util;
+    TranslateServiceHttp translateHttp;
+
+    @Autowired
+    TranslateServiceRest translateRest;
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String welcomePage(ModelMap modelMap) {
@@ -33,8 +37,16 @@ public class HomeController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         modelAndView.addObject("user", name);
-        modelAndView.addObject("topic", "Welcome to the Spring Security Learning");
-        modelAndView.addObject("description", "This is ADMIN page");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public ModelAndView userPage() {
+
+        ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        modelAndView.addObject("user", name);
         return modelAndView;
     }
 
@@ -68,7 +80,7 @@ public class HomeController {
     @RequestMapping(value = "/viewTranslate", method = RequestMethod.POST)
     public ModelAndView translatePage() {
         ModelAndView model = new ModelAndView();
-        model.addObject("languages", util.getLanguages());
+        model.addObject("languages", translateRest.getLanguages());
         model.setViewName("translate");
         return model;
     }
@@ -78,8 +90,8 @@ public class HomeController {
                                     @RequestParam(value = "toLanguage", required = true) String to,
                                     @RequestParam(value = "toConvert", required = true) String input) {
         ModelAndView model = new ModelAndView();
-        model.addObject("languages", util.getLanguages());
-        model.addObject("output", util.translate(from, to, input).getText()[0]);
+        model.addObject("languages", translateRest.getLanguages());
+        model.addObject("output", translateRest.translate(from, to, input).getText()[0]);
         model.setViewName("translate");
         return model;
     }
