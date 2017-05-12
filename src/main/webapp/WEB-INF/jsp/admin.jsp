@@ -7,6 +7,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Admin</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 </head>
 <body>
 <center>
@@ -14,10 +15,10 @@
     <h3>
         <form action="/logout" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <input type="submit" value="Logout">
+            <input type="submit" value="Logout"/>
         </form>
         <form action="/viewTranslate" method="post">
-            <input type="submit" value="Translator">
+            <input type="submit" value="Translator"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
     </h3>

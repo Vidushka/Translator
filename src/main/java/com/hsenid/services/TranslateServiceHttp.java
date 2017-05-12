@@ -5,13 +5,16 @@ import com.hsenid.interfaces.ITranslater;
 import com.hsenid.util.Words;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * Created by Vidushka on 03/05/17.
@@ -19,24 +22,26 @@ import java.util.HashMap;
 @Service
 public class TranslateServiceHttp implements ITranslater {
 
-    Gson gson = new Gson();
+    @Autowired
+    Gson gson;
+
+    @Autowired
+    Properties properties;
+
     JSONObject obj;
     Words convertedWord;
     BufferedReader br;
     HashMap<String, Object> result;
+    Boolean langLoded = false;
+    String yandexUrl;
 
     @Override
     public HashMap getLanguages() {
         try {
-            URL url = new URL("https://translate.yandex.net/api/v1.5/tr.json/getLangs?key=trnsl.1.1.20170503T091519Z.9f30c24402100dfb.91f7ddaca07e07cddb27fd1cd769dd2b43d5c765&ui=en");
+            URL url = new URL(generateUrl("", "", ""));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
-
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : "
-                        + conn.getResponseCode());
-            }
 
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
@@ -54,16 +59,10 @@ public class TranslateServiceHttp implements ITranslater {
     @Override
     public Words translate(String inputLang, String outputLang, String wordToConvert) {
         try {
-            URL url = new URL("https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170503T091519Z.9f30c24402100dfb.91f7ddaca07e07cddb27fd1cd769dd2b43d5c765&text="
-                    + wordToConvert + "&lang=" + inputLang + "-" + outputLang);
+            URL url = new URL(generateUrl(wordToConvert, inputLang, outputLang));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
-
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : "
-                        + conn.getResponseCode());
-            }
 
             br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
@@ -74,6 +73,23 @@ public class TranslateServiceHttp implements ITranslater {
             e.printStackTrace();
         }
         return convertedWord;
+    }
+
+    @Override
+    public String generateUrl(String param1, String param2, String param3) {
+        try {
+            properties.load(getClass().getClassLoader().getResourceAsStream("application.properties"));
+            if (!langLoded) {
+                yandexUrl = String.format(properties.getProperty("yandexUrl"), "getLangs", "ui=en", "", "", "", "", "");
+                langLoded = true;
+            } else {
+                yandexUrl = String.format(properties.getProperty("yandexUrl"), "translate", "text=", param1, "&lang=", param2, "-", param3);
+                langLoded = false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return yandexUrl;
     }
 
 }

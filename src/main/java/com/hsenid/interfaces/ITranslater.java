@@ -13,4 +13,6 @@ public interface ITranslater {
 
     public Words translate(String inputLang, String outLang, String input);
 
+    public String generateUrl(String param1, String param2, String param3);
+
 }

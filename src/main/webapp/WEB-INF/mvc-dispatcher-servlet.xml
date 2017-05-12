@@ -19,4 +19,6 @@
     <bean id="customAuthenticationSuccessHandler" class="com.hsenid.util.LoginSuccessHandler"/>
     <bean id="translateHttp" class="com.hsenid.services.TranslateServiceHttp"/>
     <bean id="translateRest" class="com.hsenid.services.TranslateServiceRest"/>
+    <bean id="gson" class="com.google.gson.Gson"/>
+    <bean id="properties" class="java.util.Properties"/>
 </beans>

@@ -50,7 +50,7 @@ public class HomeController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loginPage() {
 
         ModelAndView model = new ModelAndView();
@@ -80,7 +80,7 @@ public class HomeController {
     @RequestMapping(value = "/viewTranslate", method = RequestMethod.POST)
     public ModelAndView translatePage() {
         ModelAndView model = new ModelAndView();
-        model.addObject("languages", translateRest.getLanguages());
+        model.addObject("languages", translateHttp.getLanguages());
         model.setViewName("translate");
         return model;
     }
@@ -90,8 +90,8 @@ public class HomeController {
                                     @RequestParam(value = "toLanguage", required = true) String to,
                                     @RequestParam(value = "toConvert", required = true) String input) {
         ModelAndView model = new ModelAndView();
-        model.addObject("languages", translateRest.getLanguages());
-        model.addObject("output", translateRest.translate(from, to, input).getText()[0]);
+        model.addObject("output", translateHttp.translate(from, to, input).getText()[0]);
+        model.addObject("languages", translateHttp.getLanguages());
         model.setViewName("translate");
         return model;
     }

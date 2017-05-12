@@ -19,20 +19,22 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-    protected LoginSuccessHandler() {
-        super();
-    }
+//    protected LoginSuccessHandler() {
+//        super();
+//    }
 
     @Override
     public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
-        handle(request, response, authentication);
-    }
-
-    protected void handle(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
+//        handle(request, response, authentication);
         final String targetUrl = determineTargetUrl(authentication);
 
 
         redirectStrategy.sendRedirect(request, response, targetUrl);
+    }
+
+
+    protected void handle(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
+
     }
 
     protected String determineTargetUrl(final Authentication authentication) {
