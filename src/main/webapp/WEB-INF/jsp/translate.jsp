@@ -14,8 +14,8 @@
 </head>
 <body>
 <form action="/convert" method="post">
-    Type word to convert : <input type="text" name="toConvert">
-    <select name="fromLanguage">
+    Type word to convert : <input type="text" name="toConvert" value="${inputText}">
+    <select name="fromLanguage"">
         <c:forEach items="${languages}" var="language">
             <option value="<c:out value="${language.key}" />"><c:out value="${language.value}"/></option>
         </c:forEach>

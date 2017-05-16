@@ -2,6 +2,7 @@ package com.hsenid.services;
 
 import com.google.gson.Gson;
 import com.hsenid.interfaces.ITranslater;
+import com.hsenid.util.Urls;
 import com.hsenid.util.Words;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
@@ -9,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Properties;
 
 /**
  * Created by Vidushka on 03/05/17.
@@ -26,19 +25,24 @@ public class TranslateServiceHttp implements ITranslater {
     Gson gson;
 
     @Autowired
-    Properties properties;
+    Urls yandexUrl;
 
     JSONObject obj;
     Words convertedWord;
     BufferedReader br;
     HashMap<String, Object> result;
-    Boolean langLoded = false;
-    String yandexUrl;
 
+    /**
+     * Loading languages from Yandex API using Http client. To get Yandex getLanguage URL this
+     * method use ""generateUrl method.
+     * Yandex returns Json type response and here it mapped in to "result" HashMap.
+     *
+     * @return HashMap
+     */
     @Override
     public HashMap getLanguages() {
         try {
-            URL url = new URL(generateUrl("", "", ""));
+            URL url = new URL(yandexUrl.generateUrl("", "", ""));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -56,10 +60,19 @@ public class TranslateServiceHttp implements ITranslater {
         return result;
     }
 
+    /**
+     * Translate the given text using Http client. Get user inputs as parameters to translate the input text.
+     * Use "generateUrl()" method to get translate url of Yandex Api.
+     *
+     * @param inputLang     - String language code as defined in Yandex Api.(Eg. Japan - ja)
+     * @param outputLang    - String language code as defined in Yandex Api.(Eg. Japan - ja)
+     * @param wordToConvert - String word to convert .
+     * @return Word. Gives output text value.
+     */
     @Override
     public Words translate(String inputLang, String outputLang, String wordToConvert) {
         try {
-            URL url = new URL(generateUrl(wordToConvert, inputLang, outputLang));
+            URL url = new URL(yandexUrl.generateUrl(wordToConvert, inputLang, outputLang));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -73,23 +86,6 @@ public class TranslateServiceHttp implements ITranslater {
             e.printStackTrace();
         }
         return convertedWord;
-    }
-
-    @Override
-    public String generateUrl(String param1, String param2, String param3) {
-        try {
-            properties.load(getClass().getClassLoader().getResourceAsStream("application.properties"));
-            if (!langLoded) {
-                yandexUrl = String.format(properties.getProperty("yandexUrl"), "getLangs", "ui=en", "", "", "", "", "");
-                langLoded = true;
-            } else {
-                yandexUrl = String.format(properties.getProperty("yandexUrl"), "translate", "text=", param1, "&lang=", param2, "-", param3);
-                langLoded = false;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return yandexUrl;
     }
 
 }

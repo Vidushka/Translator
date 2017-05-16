@@ -21,4 +21,6 @@
     <bean id="translateRest" class="com.hsenid.services.TranslateServiceRest"/>
     <bean id="gson" class="com.google.gson.Gson"/>
     <bean id="properties" class="java.util.Properties"/>
+    <bean id="cache" class="com.hsenid.util.LanguageCache"/>
+    <bean id="url" class="com.hsenid.util.Urls"/>
 </beans>

@@ -2,6 +2,7 @@ package com.hsenid.controller;
 
 import com.hsenid.services.TranslateServiceHttp;
 import com.hsenid.services.TranslateServiceRest;
+import com.hsenid.util.LanguageCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Created by Vidushka on 4/6/2017.
+ * Controller for requests.
+ */
 @Controller
 public class HomeController {
 
@@ -21,12 +26,14 @@ public class HomeController {
     @Autowired
     TranslateServiceRest translateRest;
 
+    @Autowired
+    LanguageCache cache;
+
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String welcomePage(ModelMap modelMap) {
 
         modelMap.addAttribute("topic", "Welcome to the Spring Security Learning");
         modelMap.addAttribute("description", "This is HOME Page");
-
         return "welcome";
     }
 
@@ -80,7 +87,7 @@ public class HomeController {
     @RequestMapping(value = "/viewTranslate", method = RequestMethod.POST)
     public ModelAndView translatePage() {
         ModelAndView model = new ModelAndView();
-        model.addObject("languages", translateHttp.getLanguages());
+        model.addObject("languages", cache.getLangFromCache(Long.valueOf(1)));
         model.setViewName("translate");
         return model;
     }
@@ -90,8 +97,9 @@ public class HomeController {
                                     @RequestParam(value = "toLanguage", required = true) String to,
                                     @RequestParam(value = "toConvert", required = true) String input) {
         ModelAndView model = new ModelAndView();
-        model.addObject("output", translateHttp.translate(from, to, input).getText()[0]);
-        model.addObject("languages", translateHttp.getLanguages());
+        model.addObject("output", translateRest.translate(from, to, input).getText()[0]);
+        model.addObject("languages", cache.getLangFromCache(Long.valueOf(1)));
+        model.addObject("inputText", input);
         model.setViewName("translate");
         return model;
     }

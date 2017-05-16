@@ -14,29 +14,22 @@ import java.util.Collection;
 /**
  * Created by Vidushka on 05/05/17.
  */
-
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-//    protected LoginSuccessHandler() {
-//        super();
-//    }
-
     @Override
     public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
-//        handle(request, response, authentication);
         final String targetUrl = determineTargetUrl(authentication);
-
-
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
-
-    protected void handle(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
-
-    }
-
+    /**
+     * Redirect to relevant url based on authentication.(based on user role)
+     *
+     * @param authentication Authentication object returned from authentication process.
+     * @return String url of authenticated user.
+     */
     protected String determineTargetUrl(final Authentication authentication) {
         String targetUrl = "";
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
